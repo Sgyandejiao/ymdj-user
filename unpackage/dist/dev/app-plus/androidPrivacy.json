@@ -1,0 +1,27 @@
+{
+    "version" : "1.0.6",
+    "prompt" : "template",
+    "title" : "一秒到家用户服务协议",
+    "message" : "请你务必审慎阅读、充分理解“一秒到家用户服务协议”条款，包括但不限于：为了更好的向你提供服务，我们需要您的部分授权：包括（蓝牙、拍照、照片与媒体内文件、拨打电话）,我们将会使用这些权限为您提供蓝牙连接，拍照/文件上传与电话联系我们等功能,<br/>　　你可阅读<a href=\"https://protocol.yimiaodaojia.com/YmdjUserPrivacy.html\">《用户协议》</a><a href=\"https://protocol.yimiaodaojia.com/YmdjPrivacy.html\">《隐私政策》</a>了解详细信息。如果你同意，请点击下面按钮开始接受我们的服务。",
+    "buttonAccept" : "同意且接受",
+    "buttonRefuse" : "我不同意",
+    "second" : {
+        "title" : "确认提示",
+        "message" : "　　进入应用前，你需先同意<a href=\"https://protocol.yimiaodaojia.com/YmdjUserPrivacy.html\">《用户协议》</a><a href=\"https://protocol.yimiaodaojia.com/YmdjPrivacy.html\">《隐私政策》</a>，否则将退出应用。",
+        "buttonAccept" : "同意且继续",
+        "buttonRefuse" : "退出应用"
+    },
+    "styles" : {
+        "backgroundColor" : "#FFFFFF",
+        "borderRadius" : "5px",
+        "title" : {
+            "color" : "#5A73F4"
+        },
+        "buttonAccept" : {
+            "color" : "#5A73F4"
+        },
+        "buttonRefuse" : {
+            "color" : "#333333"
+        }
+    }
+}

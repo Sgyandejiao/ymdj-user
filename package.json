@@ -1,0 +1,17 @@
+{
+    "id": "gtc-pickerAddress",
+    "name": "pickerAddress 地区选择器",
+    "version": "1.0.0",
+    "description": "省市区地址选择器",
+    "keywords": [
+        "省市区选择器",
+        "选择器",
+        "picker"
+    ],
+    "dcloudext": {
+        "category": [
+            "前端组件",
+            "通用组件"
+        ]
+    }
+}

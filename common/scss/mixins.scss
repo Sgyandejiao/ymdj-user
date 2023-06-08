@@ -1,0 +1,138 @@
+
+
+/* 设置字体 */
+@mixin setFont($size: 30rpx, $color: #333,$weight:normal) {
+	font-size: $size;
+	color: $color;
+	font-weight: $weight;
+}
+
+/* 设置宽高 */
+@mixin setBox($width: 100%, $height: 100%) {
+	width: $width;
+	height: $height;
+}
+
+/*  flex布局 */
+@mixin flexBox($just: center, $align: center) {
+	display: flex;
+	justify-content: $just;
+	align-items: $align;
+}
+
+/* 上1像素边框 */
+@mixin border_top ($color: #eee) {
+	position: relative;
+	width: 100%;
+	&::before {
+		content: '';
+		width: 100%;
+		height: 1px;
+		border-top: 1px solid $color;
+		position: absolute;
+		top: 0;
+		left: 0;
+		transform: scaleY(.5);
+	}
+}
+
+/* 下 1像素边框 */
+@mixin border_bottom ($color: #eee) {
+	position: relative;
+	width: 100%;
+	&::before {
+		content: '';
+		width: 100%;
+		height: 1px;
+		border-bottom: 1px solid $color;
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		transform: scaleY(.5);
+	}
+}
+/* 右 1像素边框 */
+@mixin border_right ($color: #eee) {
+	position: relative;
+	width: 100%;
+	&::before {
+		content: '';
+		width: 1px;
+		height: 100%;
+		border-right: 1px solid $color;
+		position: absolute;
+		right: 0;
+		bottom: 0;
+		transform: scaleX(.5);
+	}
+}
+
+/* 溢出隐藏... */
+@mixin textOverHidden ($clamp: 1) {
+	overflow:hidden;
+	text-overflow: ellipsis;
+	display:-webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: $clamp
+}
+
+/* 上下外边距 */
+@mixin margin_tb ($top: 0, $btm: $top) {
+	margin-top: $top;
+	margin-bottom: $btm;
+}
+
+
+/* 重置button样式 */
+@mixin resetBtn ($color: #333, $bg: #fff, $height: 98rpx) {
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	border: 0;
+	height: $height;
+	border-radius: 0;
+	background: $bg;
+	color: $color;
+	font-size: 30rpx;
+	@include flexBox();
+	&::after {
+		border-color: transparent;
+	}
+}
+
+/* 底部提交按钮 */
+@mixin commitBtn ($color: #333, $bg: #fff, $height: 98rpx) {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+	padding-top: 20rpx;
+	padding-bottom: env(safe-area-inset-bottom);
+	.commit-btn {
+		@include resetBtn($color, $bg, $height);
+	}
+}
+
+/* 存在底部提交按钮 */
+@mixin commitContainer ($height) {
+	padding-bottom: env(safe-area-inset-bottom);
+	.commit-content-x {
+		padding-bottom: $height !important;
+	}
+}
+
+
+
+/* 尺寸大小 */
+$font_h: 30rpx;
+$font_lg: 28rpx;
+$font_base: 24rpx;
+$font_sm: 20rpx;
+
+
+/* 颜色 */
+$color_font: #333;
+$color_active: #EAA34C;
+$color_gray: #F8F8F8;
+// 背景颜色
+$bg_color: #f8f8f8;
