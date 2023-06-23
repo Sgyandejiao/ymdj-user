@@ -1,8 +1,7 @@
 <template>
 	<view>
-		<headBgImg></headBgImg>
-
 		<view class="content dis cl al_c">
+			<headBgImg></headBgImg>
 			<view class="search_v dis al_c">
 				<view style="width: 614rpx;margin-left: 32rpx;" @click="toSearch">
 					<u-search placeholder="搜索商品名称" :disabled="true" searchIconColor="#707070" placeholderColor="#CCCCCC"
@@ -13,27 +12,6 @@
 					<view class="title">我的订单</view>
 				</view>
 			</view>
-			<!-- <image class="head_img" src="/static/images/home-bg.png" mode="aspectFill"></image> -->
-			<!-- <view class="card dis">
-			<view class="prog">
-				<u-line-progress :percentage="100" :showText="false" height="4" activeColor="#3DBC64"
-					v-if="boxInfo.deviceCode!=''"></u-line-progress>
-				<u-line-progress :percentage="0" :showText="false" height="4" activeColor="#CCCCCC" v-else>
-				</u-line-progress>
-				<view>电量: {{boxInfo.deviceCode!=''?'100':0}}%</view>
-			</view>
-			<view class="open dis cl al_c">
-				<image src="/static/images/open.png" mode="widthFix" @click="open" v-if="boxInfo.deviceCode!=''">
-				</image>
-				<image src="/static/images/no-open.png" mode="widthFix" @click="isShowModal = true" v-else></image>
-				<view class="dis al_c" style="margin-left: 15rpx;" @click="addBox" v-if="">
-					{{boxInfo.deviceCode!=''?boxInfo.deviceName:'去绑魔盒'}}
-					<image src="/static/icon/arrow-right2.png" style="width: 28rpx;height: 28rpx;" mode=""></image>
-				</view>
-			</view>
-			<view class="btn" @click="toBoxManage" v-if="boxInfo.deviceCode!=''">授权</view>
-			<view class=" no_btn" @click="isShowModal = true" v-else>授权</view>
-		</view> -->
 			<view class="nav_v dis al_c">
 				<view class="item dis cl al_c" @click="buyVeget" v-if="!isShenhe">
 					<image class="na_img0" src="/static/icon/home/nav1.png" mode="widthFix"></image>
@@ -80,8 +58,6 @@
 											<view style="width:120rpx;color: #654200;">跑腿券x1</view>
 										</view>
 									</view>
-
-
 									<image class="tag_img" src="/static/icon/tb.png" mode="widthFix" v-if="fromType==0">
 									</image>
 									<image class="tag_img" src="/static/icon/jd.png" mode="widthFix" v-if="fromType==1">
@@ -123,7 +99,6 @@
 								</view>
 							</view>
 						</view>
-
 						<view class="no_data dis cl al_c" v-if="!leftList.length&&!rightList.length">
 							<image src="/static/images/no-order.png" mode="widthFix"></image>
 							<view>暂无商品</view>
@@ -131,7 +106,6 @@
 					</view>
 				</scroll-view>
 			</view>
-
 		</view>
 	</view>
 </template>
@@ -139,9 +113,13 @@
 <script>
 	const Alibcsdk = uni.requireNativePlugin('UZK-Alibcsdk');
 	const jdkpl = uni.requireNativePlugin("FFX-Kpl")
+	import headBgImg from '@/components/headBgImg.vue'
 	let maskView = null,
 		maskView1 = null
 	export default {
+		components: {
+			headBgImg
+		},
 		data() {
 			return {
 				keyword: '',
@@ -155,7 +133,7 @@
 				tbP: '',
 				scrollTop: 0,
 				isShenhe: true,
-				isJump:false
+				isJump: false
 			};
 		},
 		onShow() {
@@ -165,7 +143,7 @@
 			}
 			this.closeWebview()
 			this.isJump = false
-			if (!uni.getStorageSync('ftoken') || !uni.getStorageSync('phone')) { 
+			if (!uni.getStorageSync('ftoken') || !uni.getStorageSync('phone')) {
 				this.showTabMask()
 			}
 		},
@@ -240,6 +218,16 @@
 			},
 			toDetail(id) {
 				if (!this.$checkLogin()) return;
+				// -----------------
+				let url = 'https://s.click.taobao.com/3zvCoFu'
+				Alibcsdk.openurl({
+					url: url,
+					nativeFailedMode: 'download'
+				}, result => {
+					console.log('plug.openurl', result)
+				});
+				return;
+				// ---------------
 				plus.nativeUI.showWaiting()
 				setTimeout(r => {
 					plus.nativeUI.closeWaiting()
@@ -606,7 +594,6 @@
 		padding-top: 100rpx;
 		position: fixed;
 		top: 0;
-
 		.rig_icon {
 			width: 48rpx;
 			height: 48rpx;

@@ -1,5 +1,5 @@
-// let env = 'dev'
-let env = 'pro'
+let env = 'dev'
+// let env = 'pro'
 
 let isChannel = 1 // 渠道包（审核使用）
 // let isChannel = 0 // 非渠道包（服务器使用）

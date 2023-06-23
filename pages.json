@@ -10,7 +10,7 @@
 				"disableScroll": true
 			}
 		},
-		
+
 		{
 			"path": "pages/home/index",
 			"style": {
@@ -36,7 +36,7 @@
 			}
 		},
 
-	
+
 
 		{
 			"path": "pages/login/code",
@@ -394,14 +394,30 @@
 			}
 		},
 		{
+			"path": "pages/shopping/buyIndex",
+			"style": {
+				"navigationBarTitleText": "买东西",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
+			"path": "pages/shopping/buyWeb",
+			"style": {
+				"navigationBarTitleText": "买东西",
+				"navigationStyle": "custom",
+				"enablePullDownRefresh": true
+			}
+		},
+		{
 			"path": "pages/phoneBill/index",
 			"style": {
 				"navigationBarTitleText": "",
 				"navigationStyle": "custom"
-		
+
 			}
 		},
-		
+
 		{
 			"path": "pages/phoneBill/record",
 			"style": {
@@ -414,41 +430,37 @@
 				"navigationBarTitleText": "话费充值",
 				"navigationStyle": "custom",
 				"enablePullDownRefresh": false,
-				"app-plus": {//app平台
-						"bounce": "none"//禁止滚动
-					}
+				"app-plus": { //app平台
+					"bounce": "none" //禁止滚动
+				}
 			}
-		}
-	    ,{
-            "path" : "pages/bindCommunit/bindCommunit",
-            "style" :                                             
-            {
-                "navigationBarTitleText": "绑定小区",
-                "enablePullDownRefresh": false,
+		}, {
+			"path": "pages/bindCommunit/bindCommunit",
+			"style": {
+				"navigationBarTitleText": "绑定小区",
+				"enablePullDownRefresh": false,
 				"navigationStyle": "custom"
-            }
-            
-        },{
-			"path" : "pages/bindCommunit/selectCity",
-			"style" :                                             
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false,
+			}
+
+		}, {
+			"path": "pages/bindCommunit/selectCity",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
 				"navigationStyle": "custom",
 				"disableScroll": true
 			}
 		},
 		{
-			"path" : "pages/address/edit/editReceive",
-			"style" :                                             
-			{
-			    "navigationBarTitleText": "",
-			    "enablePullDownRefresh": false,
+			"path": "pages/address/edit/editReceive",
+			"style": {
+				"navigationBarTitleText": "",
+				"enablePullDownRefresh": false,
 				"navigationStyle": "custom",
 				"disableScroll": true
 			}
 		}
-    ],
+	],
 
 	"tabBar": {
 		"color": "#616161",
@@ -468,7 +480,7 @@
 				"selectedIconPath": "/static/tabs/tab2s.png"
 			},
 			{
-				"pagePath": "pages/shopping/index",
+				"pagePath": "pages/shopping/buyIndex",
 				"text": "买东西",
 				"iconPath": "/static/tabs/buy.png",
 				"selectedIconPath": "/static/tabs/buys.png"
@@ -495,16 +507,6 @@
 		"navigationBarTitleText": "数字物业",
 		"navigationBarBackgroundColor": "white",
 		"backgroundColor": "#f0f0f0"
-	},
-
-	"condition": {
-		//模式配置，仅开发期间生效
-		"current": 0, //当前激活的模式(list 的索引项)
-		"list": [{
-				"name": "公司首页",
-				"query": "pages/index/index"
-			}
-
-		]
 	}
+
 }

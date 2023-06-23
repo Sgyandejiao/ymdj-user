@@ -10,11 +10,11 @@
 		<view class="search-view dis al_c">
 			<view class="lef dis al_c" @click="toSelectCity">
 				<image class="icon1" src="/static/icon/location.png" mode="widthFix"></image>
-				<view class="city-name">{{city}}</view>
+				<view class="city-name">{{city}}{{district}}</view>
 				<image class="icon2" src="/static/icon/arrow-bottom1.png" mode="widthFix"></image>
 				<view class="line"> </view>
 			</view>
-			<input type="text" v-model="keyword" maxlength="15" placeholder-style="color:#ccc" placeholder="请输入小区"
+			<input type="text" v-model="keyword" style="border-top-right-radius: 50rpx;border-bottom-right-radius: 50rpx; " maxlength="15" placeholder-style="color:#ccc" placeholder="请输入小区"
 				@confirm="search" @input="onInput">
 		</view>
 
@@ -315,7 +315,7 @@
 		}
 
 		input {
-			width: 395rpx;
+			max-width: 355rpx;
 			height: 100%;
 			background-color: #fff;
 

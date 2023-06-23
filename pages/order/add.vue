@@ -100,13 +100,13 @@
 				<view class="card2 dis cl al_c" v-if="navIndex!=3">
 					<view class="itm dis al_c" @click="toShowPickup" v-if="navIndex!=0 || radio==1">
 						<view class="lef dis al_c"><text
-								class="t1">取</text>{{navIndex==0?'在哪里取件':navIndex==2?'收件地址':'在哪里购买'}}</view>
+								class="t1">{{navIndex!=2?'取':'收'}}</text>{{navIndex==0?'在哪里取件':navIndex==2?'收件地址':'在哪里购买'}}
+						</view>
 						<view class="rig  dis al_c" style="color: #F44850;">
 							<view class="ad_text" v-if="navIndex!=2">
 								<text v-if="navIndex==1">{{pickupInfo.shopName}}{{pickupInfo.shopAddress}}</text>
 								<view v-if="pickupInfo.address=='请选择'&&navIndex==1" style="color: #CCCCCC;">不选,表示不指定购买商店
 								</view>
-								<!-- <view v-else-if="pickupInfo.address=='请选择'" style="color: #CCCCCC;">请选择</view> -->
 								<view v-else-if="navIndex!=1">{{pickupInfo.address}}</view>
 							</view>
 
@@ -118,7 +118,8 @@
 						</view>
 					</view>
 					<view class="itm itm_ls dis al_c" style="height: 150rpx;" @click="toReceive">
-						<view class="lef dis al_c"><text class="t2">送</text>{{navIndex==2?'寄件地址':'送到哪里去'}}</view>
+						<view class="lef dis al_c"><text
+								class="t2">{{navIndex==2?'寄':'送'}}</text>{{navIndex==2?'寄件地址':'送到哪里去'}}</view>
 						<view class="rig dis al_c" style="color: #2E6EEF;">
 							<view class="ad_text dis cl" v-if="navIndex!=2">
 								<view class="name">{{receiveInfo.communityName}}</view>
@@ -140,7 +141,6 @@
 						<view class="rig  dis al_c" style="color: #F44850;">
 							<u--textarea v-model="address1" placeholder="请输入服务地址" maxlength="62"
 								placeholder-style="color:#CCC;padding-left:50rpx" autoHeight></u--textarea>
-							<!-- <image src="/static/icon/arrow-right2.png" mode=""></image> -->
 						</view>
 					</view>
 				</view>
@@ -185,15 +185,37 @@
 						<view class="lef">是否代寄</view>
 						<view class="rig  dis al_c">
 							<u-switch v-model="isSend" activeColor="#F44850"></u-switch>
-							<!-- <image src="/static/icon/arrow-right2.png" mode=""></image> -->
 						</view>
 					</view>
 				</view>
 
 				<!-- 取件地址 -->
 				<view class="picker">
-					<u-picker :show="showPickup" :columns="pickupList" keyName="name" @confirm="confirmPickup"
-						@cancel="showPickup=false"></u-picker>
+					<u-popup :show="showPickup" :round="20" mode="bottom">
+						<view class="pickup-view dis cl al_c">
+							<view class="pick-title dis al_c">
+								<view></view>
+								<view>请选择代取点</view>
+								<image src="/static/icon/recharge/close.png" mode="widthFix" @click="showPickup=false">
+								</image>
+							</view>
+							<view class="pick-cell dis al_c" v-for="(item,index) in pickupList1" :key="item.name"
+								@click="pickupIndex=index">
+								<view class="name">{{item.name}}</view>
+								<image src="/static/icon/selects2.png" mode="widthFix" v-if="pickupIndex==index">
+								</image>
+								<image src="/static/icon/select1.png" mode="widthFix" v-else></image>
+							</view>
+							<textarea class="pickup-input" maxlength="50" placeholder="请输入其他代收点地址"
+								placeholder-style="color:#CCCCCC" v-model="pickupOrtherAdds"
+								v-if="pickupIndex==pickupList1.length-1"></textarea>
+							<view class="btn default" v-if="pickupIndex!=pickupList1.length-1 || pickupOrtherAdds!=''"
+								@click="confirmPickup">确定</view>
+							<view class="btn disable" v-else>确定</view>
+						</view>
+					</u-popup>
+					<!-- <u-picker :show="showPickup" :columns="pickupList" keyName="name" @confirm="confirmPickup"
+						@cancel="showPickup=false"></u-picker> -->
 				</view>
 
 				<view class="card2 dis cl al_c" v-if="navIndex!=3">
@@ -341,6 +363,7 @@
 				settingInfo: {},
 				showPickup: false,
 				pickupList: [],
+				pickupList1: [],
 				pickupInfo: {
 					address: '请选择'
 				},
@@ -405,7 +428,9 @@
 				commission: '',
 				communitConfig: {},
 				isSubmit: false,
-				isExpand: false
+				isExpand: false,
+				pickupIndex: 0,
+				pickupOrtherAdds: ''
 			};
 		},
 		computed: {
@@ -536,8 +561,8 @@
 					operateType: 0,
 					communityId: communityId
 				}
-				console.log('万能帮入参',data)
-				this.$util.request(this.$apis.getTypeSetting,data).then(r => {
+				console.log('万能帮入参', data)
+				this.$util.request(this.$apis.getTypeSetting, data).then(r => {
 					// console.log('万能帮服务类型', r)
 					if (r.status) {
 						this.tabs = r.data
@@ -552,7 +577,7 @@
 				console.log('value=', e.target.value)
 				console.log('minPrice=', that.orderPrice)
 				if (that.tabsCurrent != -1 && Number(e.target.value) < this.orderPrice) {
-					
+
 					that.$toast('小于最低佣金' + that.tabs[that.tabsCurrent].typePrice + '请修改后重试')
 					that.commission = that.orderPrice
 					that.sumPriceInteger = that.$getBit(that.orderPrice).integer
@@ -560,15 +585,15 @@
 					return;
 				}
 				if (e.target.value && Number(e.target.value) > 0) {
-					console.log('价格赋值',e.target.value)
+					console.log('价格赋值', e.target.value)
 					that.$nextTick(() => {
 						that.commission = Number(e.target.value).toFixed(2)
 						// that.orderPrice = e.target.value
 						that.sumPriceInteger = that.$getBit(e.target.value).integer
 						that.sumPriceDecimal = that.$getBit(e.target.value).decimal
 					})
-					console.log('commission',that.commission)
-					console.log('orderprice',that.orderPrice)
+					console.log('commission', that.commission)
+					console.log('orderprice', that.orderPrice)
 				} else {
 					that.$nextTick(() => {
 						that.commission = ''
@@ -589,7 +614,7 @@
 					this.$toast('请填入佣金金额')
 					return
 				}
-				if (this.navIndex == 3 && this.commission <this.orderPrice) {
+				if (this.navIndex == 3 && this.commission < this.orderPrice) {
 					this.$toast('佣金金额不能低于最低金额')
 					return
 				}
@@ -683,7 +708,6 @@
 						.radio == 1) ? this.$apis.placeAnOrder : navIndex == 1 ? this.$apis.bugGoodsAnOrder :
 					navIndex == 3 ? this.$apis.agentAnythingOrder : this.$apis.deliveryExpressOrder
 				// console.log('url=', url)
-				// return;
 				this.$util.request(url, data, 'POST').then(r => {
 					console.log('下单结果', r)
 					if (!r.status) {
@@ -803,12 +827,16 @@
 							this.$util.request(this.$apis.getPickupAddressList, data).then(r => {
 								console.log('外卖--用户取件地址列表', r)
 								if (r.status && this.navIndex == 0) {
-									// this.pickupInfo = r.data[0] //去掉默认显示
 									r.data = r.data.filter(item => {
 										return item.addressType == '驿站'
 									})
+									r.data.push({
+										name: '其他代收点',
+										address: ''
+									})
 									this.pickCommunitId = data.communityId
 									this.pickupList = [r.data]
+									this.pickupList1 = r.data
 								}
 							})
 						}
@@ -871,8 +899,6 @@
 							let minutes = date.getMinutes();
 							let currTimeList = [hour, minutes]
 							let beginTimeList = beginTime.split(':')
-							// console.log('currTimeList=',currTimeList)
-							// console.log('beginTimeList=',beginTimeList)
 							if (currTimeList[0] > 0 && currTimeList[0] < Number(beginTimeList[0])) {
 								return true
 							} else if (currTimeList[0] == Number(beginTimeList[0]) && currTimeList[1] < Number(
@@ -897,12 +923,12 @@
 				this.getOrderPrice()
 			},
 			confirmPickup(e) {
-				let itm = e.value[0]
+				// let itm = e.value[0]
+				let itm = this.pickupIndex!=this.pickupList1.length-1?this.pickupList1[this.pickupIndex]:{name:'',address:this.pickupOrtherAdds};
 				let info = {
 					address: ''
 				}
-
-				info.address = itm.name + ':' + itm.address;
+				info.address = itm.name?itm.name + ':' + itm.address:itm.address;
 				console.log(info)
 				this.pickupInfo = info
 				this.showPickup = false
@@ -951,12 +977,10 @@
 				this.isdisabledNum = index == 0 ? true : false
 			},
 			getPrice() {
-
 				let {
 					navIndex,
 					radio
 				} = this
-				console.log('navIndex', navIndex)
 				let data = {
 					code: this.weightCode,
 					communityId: this.receiveInfo.communityId,
@@ -965,59 +989,17 @@
 						navIndex == 2 ? 4 : 3
 				}
 				console.log('订单价格入参', data)
-
 				this.$util.request(this.$apis.getExpense, data, 'POST').then(res => {
 					console.log('订单价格', res)
-
 					setTimeout(() => {
 						plus.nativeUI.closeWaiting()
 					}, 500)
 					let orderPrice = Number(res.resultValue).toFixed(2)
 					this.orderPrice = orderPrice
 					this.toSumPrice(this.num, true, true)
-					return;
-					// let sumPrice = (Number(this.orderPrice) * this.num).toFixed(2)
-					// if (this.couponMoney > 0) {
-					// 	// 切换价格再次计算优惠券
-					// 	if ((sumPrice - Number(this.couponMoney)) >= 0) {
-					// 		sumPrice = sumPrice - Number(this.couponMoney)
-					// 		sumPrice = sumPrice.toFixed(2)
-					// 	} else {
-					// 		uni.showModal({
-					// 			content: '该重量范围低于总优惠金额，需重新选择优惠券',
-					// 			showCancel: false,
-					// 			success: (r) => {
-					// 				this.couponList = []
-					// 				this.couponMoney = 0
-					// 				uni.removeStorageSync('couponList')
-					// 				uni.removeStorageSync('couponSumprice')
-					// 			}
-					// 		})
-					// 	}
-					// }
-					// this.sumPrice = sumPrice
-					// this.sumPriceInteger = this.$getBit(sumPrice).integer
-					// this.sumPriceDecimal = this.$getBit(sumPrice).decimal
 				})
 			},
 			upImg() {
-
-				// plus.android.requestPermissions(['android.permission.CAMERA'], function(e) {
-				// 	if (e.deniedAlways.length > 0) {
-				// 		console.log('权限被拒绝')
-				// 	}
-				// 	if (e.deniedPresent.length > 0) {
-				// 		console.log('权限被临时拒绝')
-				// 	}
-				// })
-				// plus.ios.requestPermissions(['android.permission.CAMERA'], function(e) {
-				// 	if (e.deniedAlways.length > 0) {
-				// 		console.log('权限被拒绝')
-				// 	}
-				// 	if (e.deniedPresent.length > 0) {
-				// 		console.log('权限被临时拒绝')
-				// 	}
-				// })
 				let _self = this;
 
 				function compressImage(num) {
@@ -1073,7 +1055,7 @@
 									},
 									success: (res) => {
 										res.data = JSON.parse(res.data)
-										// console.log('上传结果', res.data)
+										console.log('上传结果', res.data)
 										if (index == newImgList.length - 1) {
 											uni.hideLoading()
 											this.$toast('图片上传成功')
@@ -1115,11 +1097,6 @@
 							})
 						}
 						compressImg(0)
-
-
-						// console.log('tempFilePaths',tempFilePaths)
-
-
 					},
 					fail: () => {
 						uni.hideLoading()
@@ -1138,7 +1115,6 @@
 			},
 
 			valChange(e) {
-				// console.log('当前值为: ' + e.value)
 				this.toSumPrice(e.value, true)
 			},
 			toSumPrice(num, isAgain, isWeight) {
@@ -1275,8 +1251,8 @@
 			},
 			sumCodeHight(list) {
 				let codeHeight = 0
-				let addNum = this.codeSum<=12?98:100
-				console.log('addNum',addNum)
+				let addNum = this.codeSum <= 12 ? 98 : 100
+				console.log('addNum', addNum)
 				list.forEach(item => {
 					if (item.codeList.length) codeHeight += 98
 					item.codeList.forEach(son => {
@@ -1290,7 +1266,7 @@
 				}
 				this.openHeight = openHeight
 			},
-
+			
 		}
 	}
 </script>
@@ -2221,6 +2197,96 @@
 		.deg180 {
 			transform-origin: center center;
 			transform: rotate(180deg);
+		}
+	}
+
+	.pickup-view {
+		width: 750rpx;
+		background-color: #fff;
+		min-height: 450rpx;
+		max-height: 928rpx;
+		padding-bottom: 120rpx;
+		position: relative;
+		border-top-left-radius: 50rpx;
+		border-top-right-radius: 50rpx;
+
+		.pick-title {
+			width: 750rpx;
+			height: 110rpx;
+			background: #F7F7F9;
+			justify-content: space-between;
+			border-top-left-radius: 50rpx;
+			border-top-right-radius: 50rpx;
+
+			view {
+				font-size: 34rpx;
+				font-family: PingFang SC-Medium, PingFang SC;
+				font-weight: 550;
+				color: #333333;
+				margin-left: 30rpx;
+			}
+
+			image {
+				width: 48rpx;
+				height: 48rpx;
+				margin-right: 30rpx;
+			}
+		}
+
+		.pick-cell {
+			width: 670rpx;
+			height: 98rpx;
+			justify-content: space-between;
+
+			view {
+				font-size: 28rpx;
+				font-family: PingFang SC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #333333;
+			}
+
+			image {
+				width: 36rpx;
+				height: 36rpx;
+			}
+		}
+
+		.pickup-input {
+			width: 620rpx;
+			height: 120rpx;
+			background: #FCFCFC;
+			border-radius: 10rpx;
+			border: 1rpx solid #D2D2D2;
+			padding: 20rpx;
+			font-size: 26rpx;
+			font-family: PingFang SC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #333;
+			margin-bottom: 44rpx;
+		}
+
+		.btn {
+			width: 690rpx;
+			height: 98rpx;
+			background: linear-gradient(to left, #FF4E8C, #F73740);
+			border-radius: 50rpx;
+			line-height: 98rpx;
+			text-align: center;
+			font-size: 34rpx;
+			font-family: PingFang SC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #FFFFFF;
+			position: absolute;
+			bottom: 20rpx;
+			left: 30rpx;
+		}
+
+		.disable {
+			opacity: 0.5;
+		}
+
+		.default {
+			opacity: 1;
 		}
 	}
 </style>

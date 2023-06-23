@@ -667,7 +667,7 @@
 							}
 							uni.showModal({
 								title: "发现新版本" + data.enabledVersion,
-								content: data.content,
+					 			content: data.content,
 								showCancel: data.enabledForceUpdate ? false : true,
 								success: (res) => {
 									if (res.confirm ==
@@ -690,25 +690,27 @@
 								// return;
 							}
 							let vendorList = ['HUAWEI', 'Xiaomi', 'OPPO', 'Vivo']
+							let vendor = plus.device.vendor
+							let model = plus.device.model
 							// 该版本为审核版本，进行审核状态判断
 							if (inf.version == data.version && state == 0) {
-
+								
 								// 厂商对应审核状态通过，待发布，不规避审核
-								if ((plus.device.vendor == 'HUAWEI' && data.huaweiStatus == 1) ||
-									(plus.device.vendor == 'Xiaomi' && data.xiaomiStatus == 1) ||
-									(plus.device.vendor == 'OPPO' && data.oppoStatus == 1) ||
-									(plus.device.vendor == 'Vivo' && data.vivoStatus == 1)) {
-									console.log('厂商-', plus.device.vendor, '审核通过')
+								if ((vendor == 'HUAWEI' && data.huaweiStatus == 1) ||
+									(vendor == 'Xiaomi' && data.xiaomiStatus == 1) ||
+							 		((vendor == 'OPPO' || model.toUpperCase().indexOf('IQOO')!=-1) && data.oppoStatus == 1) ||
+									((vendor == 'Vivo' || model.toUpperCase().indexOf('ONEPLUS')!=-1) && data.vivoStatus == 1)) {
+									console.log('厂商-', vendor, '审核通过')
 									this.isShenhe = false
 									uni.setStorageSync('isShenhe', 0)
 									return;
-								} else if (vendorList.indexOf(plus.device.vendor) == -1 &&
+								} else if (vendorList.indexOf(vendor) == -1 &&
 									data.huaweiStatus == 1 &&
 									data.xiaomiStatus == 1 &&
 									data.oppoStatus == 1 &&
 									data.vivoStatus == 1) {
 									// 非四大厂商，都审核通过之后不规避审核
-									console.log('厂商-', plus.device.vendor, '审核通过')
+									console.log('厂商-', vendor, '审核通过')
 									this.isShenhe = false
 									uni.setStorageSync('isShenhe', 0)
 								}

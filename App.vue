@@ -1,23 +1,21 @@
 <script>
 	import encrypt from "./libs/encrypt.js";
 	import permision from "@/js_sdk/wa-permission/permission.js"
-	import headBgImg from '@/components/headBgImg.vue'
+	import tool from '@/components/tool.vue'
 	// let env = 'dev'
 	// let env = 'pro'
 	// const apiUrl = env == 'pro' ? 'https://gateway.fanssh.com' : 'https://gateway-test.fanssh.com'
 
 	export default {
-		components: {
-			headBgImg
-		},
+		mixins:[tool],
 		globalData: {
-			isCloseLocation: false,	//是否关闭请求定位
+			isCloseLocation: false, //是否关闭请求定位
 		},
 		onLaunch: function() {
 			console.log('App Launch')
+
 			// 锁定屏幕旋转
 			plus.screen.lockOrientation("portrait-primary")
-
 
 			let isPlaying = false
 			plus.push.addEventListener("click", (msg) => {
@@ -127,9 +125,18 @@
 		},
 		onShow: function() {
 			console.log('App Show')
-			// if (this.$apis.env == 'dev') {
-			// 	return;
-			// }
+			//获取第三方程序调用时传递给程序的参数
+			setTimeout(function() {
+				let args = plus.runtime.arguments;
+				if (args) {
+					// 处理args参数的逻辑代码，如直达到某新页面等
+					console.log('来自H5传递参数:', args)
+					if(JSON.stringify(args).indexOf('ymdj.com')!=-1){
+						this.changeLink(args,'app')
+					}
+				}
+			}, 10);
+			
 			uni.getClipboardData({
 				success: (res) => {
 					let data = res.data

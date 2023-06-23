@@ -2,7 +2,7 @@
     "name" : "一秒到家",
     "appid" : "__UNI__8BF038B",
     "description" : "",
-    "versionName" : "1.2.3",
+    "versionName" : "1.2.1",
     "versionCode" : 171,
     "transformPx" : false,
     /* 5+App特有相关 */
@@ -72,7 +72,8 @@
                 "permissionPhoneState" : {
                     "request" : "none"
                 },
-                "autoSdkPermissions" : true
+                "autoSdkPermissions" : true,
+                "schemes" : "www.ymdj.com"
             },
             /* ios打包配置 */
             "ios" : {
@@ -92,7 +93,7 @@
                 "dSYMs" : false,
                 "urltypes" : [
                     {
-                        "urlschemes" : [ "tbopen34026387" ]
+                        "urlschemes" : [ "tbopen34371582" ]
                     },
                     {
                         "urlschemes" : [ "sdkback4d33072f0c0e1a16e5b3269ee56e8e0a" ]
@@ -213,10 +214,10 @@
                 }
             },
             "FFX-Kpl" : {
-                "appkey" : "2395217c1c777740e94dc2cbaa0cde38",
-                "iosappkey" : "4d33072f0c0e1a16e5b3269ee56e8e0a",
-                "iossecret" : "6fbd0741a11e4a77b18be6a99b7df634",
-                "secret" : "644646e1a32f4beb8ace80284bf4d0ac",
+                "appkey" : "5c276fb234fb2765a1fac2c7d8b3facd",
+                "iosappkey" : "2f80ce36d819afc9535720ad029f8f57",
+                "iossecret" : "e262d69be6a04d238c1a0cfca3ad251e",
+                "secret" : "cad5b2ace1154b20a00f855076e7b1d6",
                 "__plugin_info__" : {
                     "name" : "京东联盟开普勒适配uniapp唤醒京东客户端",
                     "description" : "基于京东联盟开普勒sdk3.4.0完整版本制作",

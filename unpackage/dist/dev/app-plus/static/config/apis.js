@@ -100,17 +100,21 @@ module.exports = {
 
 
 	// 淘京拼接口
-	generatePddPromUrl: apiUrl + '/recharge-service/api/welfare/generatePddPromUrl', // 生成拼多多授权链接
-	queryPddMemberAuthority: apiUrl + '/recharge-service/api/welfare/queryPddMemberAuthority', // 查询拼多多是否授权
-	getProductCategory: apiUrl + '/ymdj-app-service/api/index/getProductCategory', // 类目
-	itemList: apiUrl + '/ymdj-app-service/api/index/itemList', // 获取商品列表
+	generatePddPromUrl: apiUrl + '/ymdj-shopping-service/shopping/welfare/generatePddPromUrl', // 生成拼多多授权链接
+	queryPddMemberAuthority: apiUrl + '/ymdj-shopping-service/shopping/welfare/queryPddMemberAuthority', // 查询拼多多是否授权
+	getProductCategory: apiUrl + '/ymdj-app-service/shopping/productClassify', // 类目
+	itemList: apiUrl + '/ymdj-app-service/shopping/itemList', // 获取商品列表
 	deleteAuthInfo: apiUrl + '/ymdj-app-service/userAuth/deleteAuthInfo', // 删除用户授权信息
-	taobaoAuthorize: apiUrl + '/ymdj-app-service/api/index/taobaoAuthorize', // 淘宝授权
-	pddAuthorize: apiUrl + '/ymdj-app-service/api/index/pddAuthorize', // 拼多多授权
-	postHighComission: apiUrl + '/ymdj-app-service/api/index/postHighComission', // 淘京拼转链高佣转链接口
+	taobaoAuthorize: apiUrl + '/ymdj-app-service/shopping/taobaoAuthorize', // 淘宝授权
+	pddAuthorize: apiUrl + '/ymdj-app-service/shopping/pddAuthorize', // 拼多多授权
+	postHighComission: apiUrl + '/ymdj-app-service/shopping/postHighComission', // 淘京拼转链高佣转链接口
 	getThirdOrderList: apiUrl + '/ymdj-app-service/order/getThirdOrderList', // 用户查询淘京拼订单列表
 	getActivityUrl: apiUrl + '/ymdj-app-service/api/index/getActivityUrl', // 获取活动链接 (饿了么（elem）,美团（meituan）)
-	superSearch: apiUrl + '/ymdj-app-service/api/index/superSearch', // 商品超级搜索
+	superSearch: apiUrl + '/ymdj-app-service/shopping/superSearch', // 商品超级搜索
+	mainAggregate: apiUrl + '/ymdj-app-service/shopping/mainAggregate', // 买东西首页
+	getBannerInfo: apiUrl + '/ymdj-app-service/common/getBannerInfo', // 买东西首页banner/背景
+	
+	
 
 	
 	// 话费充值接口

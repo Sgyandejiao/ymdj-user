@@ -1,7 +1,7 @@
 <template>
 
 	<view class="content dis cl al_c">
-		<headBgImg></headBgImg>
+		<!-- <headBgImg></headBgImg> -->
 		<view class="head_v dis cl al_c">
 			<view class="search_v dis al_c">
 				<view class="left_icon" @click="navBack">
@@ -15,20 +15,18 @@
 				</view>
 			</view>
 			<view class="tabs">
-				<u-tabs :list="tabs" :current="current" :is-scroll="false" lineColor="#F44850" :activeStyle="{
-        color: '#303133',
+				<u-tabs :list="tabs" :current="current" :is-scroll="false"  lineColor="#F4F4F4" :activeStyle="{
+        color: '#FA2C18',
         fontWeight: 'bold',
         transform: 'scale(1.05)'
-    }" itemStyle="width:75px;height: 40px;fontSize:32rpx" @change="changeTabs"></u-tabs>
+    }" itemStyle="width:45px;height: 40px;fontSize:28rpx" @change="changeTabs"></u-tabs>
 			</view>
-
 		</view>
-		<!-- <image class="head_img" src="/static/images/search-bg.png" mode="aspectFill"></image> -->
 		<view class="card dis cl al_c" v-if="!list.length" style="width: 686rpx;">
 			<view class="history dis cl al_c">
 				<view class="top dis al_c">
 					<view>搜索历史</view>
-					<image src="/static//icon/del2.png" mode="aspectFill" @click="delHistory"></image>
+					<image src="/static//icon/del4.png" mode="aspectFill" @click="delHistory"></image>
 				</view>
 				<view class="tag_list dis" v-if="history.length">
 					<view class="itm" v-for="(item,index) in history" :key="index" @click="searchHistory(item)">{{item}}
@@ -39,6 +37,14 @@
 		</view>
 
 		<view class="card bg_f0 dis cl al_c" v-if="list.length">
+			<view class="filter dis al_c">
+				<view :class="['item','al_c',filterIndex==0?'act':'def']" @click="sortList(0)">综合</view>
+				<view class="item al_c" @click="sortList(1)">价格
+					<image src="/static/icon/sort.png" mode="widthFix" v-if="filterIndex==0"></image>
+					<image src="/static/icon/sortUp.png" mode="widthFix" v-if="filterIndex==1&&sortIndex==0"></image>
+					<image src="/static/icon/sortDown.png" mode="widthFix" v-if="filterIndex==1&&sortIndex==1"></image>
+				</view>
+			</view>
 			<scroll-view scroll-y="true" style="width:750rpx;height: 82vh;" upper-threshold="50" lower-threshold="10"
 				@scrolltolower="tolower">
 				<view class="goodsList dis">
@@ -133,7 +139,9 @@
 						name: '拼多多'
 					}
 				],
-				history: []
+				history: [],
+				filterIndex:0,
+				sortIndex:1
 			}
 		},
 		onLoad(opt) {
@@ -207,6 +215,15 @@
 				plus.nativeUI.showWaiting()
 				this.searchGoods(this.pageIndex)
 			},
+			sortList(index){
+				this.filterIndex = index
+				if(index==1){
+					this.sortIndex = this.sortIndex==0?1:0
+				}else{
+					this.sortIndex = 1
+				}
+				console.log('filter:',this.filterIndex,'sort:',this.sortIndex)
+			},
 			searchGoods(pageIndex) {
 				let {
 					keyword
@@ -220,7 +237,7 @@
 					itemFrom: this.current,
 					tbP: pageIndex == 1 ? 1 : this.tbP
 				}
-				console.log('data',data)
+				console.log('data', data)
 				this.$util.request(this.$apis.superSearch, data).then(res => {
 					console.log('搜索结果', res)
 					setTimeout(() => {
@@ -228,7 +245,7 @@
 					}, 300)
 					if (res.status) {
 						if (res.data.length) {
-							
+
 							let list = res.data
 							list = list.filter(item => {
 								return !this.$checkWords(item.itemTitle)
@@ -472,7 +489,7 @@
 <style lang="scss">
 	page {
 		width: 750rpx;
-		background-color: #f0f0f0;
+		background-color: #F4F4F4;
 
 	}
 
@@ -495,7 +512,10 @@
 		}
 
 		.tabs {
+			width: 740rpx;
 			z-index: 999;
+			margin-top: 14rpx;
+			margin-left: 10rpx;
 		}
 	}
 
@@ -511,7 +531,7 @@
 		width: 750rpx;
 		min-height: 83.5vh;
 		position: relative;
-		margin-top: 259rpx;
+		margin-top: 269rpx;
 		background: #FFFFFF;
 		border-radius: 32rpx;
 	}
@@ -542,7 +562,7 @@
 
 			.itm {
 				background: #EEEEEE;
-				border-radius: 8rpx;
+				border-radius: 30rpx;
 				padding: 12rpx 24rpx;
 				font-size: 28rpx;
 				color: #333333;
@@ -655,7 +675,7 @@
 		text-indent: 2.5em;
 		word-wrap: break-word;
 		word-break: break-all;
-		white-space:pre-wrap;
+		white-space: pre-wrap;
 	}
 
 
@@ -706,6 +726,35 @@
 	}
 
 	.bg_f0 {
-		background-color: #f0f0f0;
+		background-color: #F5F5F5;
+	}
+
+	.filter {
+		width: 750rpx;
+		height: 73rpx;
+		background: linear-gradient(to bottom, #FFFFFF, #F5F5F5);
+		border-top-left-radius: 20rpx;
+		border-top-right-radius: 20rpx;
+
+		.item {
+			height: 73rpx;
+			margin: 0 30rpx 0 50rpx;
+			font-size: 26rpx;
+			font-family: PingFang SC-Medium, PingFang SC;
+			font-weight: 550;
+			color: #333333;
+			line-height: 73rpx;
+			image{
+				width: 18rpx;
+				height: 18rpx;
+				margin-left: 6rpx;
+			}
+		}
+		.act{
+			color: #FA2C18;
+		}
+		.def{
+			color: #333333;
+		}
 	}
 </style>
